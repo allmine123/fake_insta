@@ -1,28 +1,17 @@
-== README
+#### Post(1)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* posts 컨트롤러 `rails g controller posts index new create show edit update destroy` 
+* post 모델`rails g model post title:string content:text `
 
-Things you may want to cover:
+#### Comment(N)
 
-* Ruby version
+* comments 컨트롤러 
 
-* System dependencies
+  * CRUD - Create
 
-* Configuration
+* comment 모델 
 
-* Database creation
+  * `rails g model comment content:string post_id:integer`
 
-* Database initialization
+    
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
