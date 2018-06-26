@@ -1,9 +1,11 @@
-<a href="/posts/new">글 쓰러가기</a>
+<!-- <a href="/posts/new">글 쓰러가기</a> -->
+<%= link_to '글쓰기', new_post_path %>
 
 <% @posts.each do |post| %>
   <p><%= post.id %></p>
   <p><%= post.title %></p>
   <p><%= post.content %></p>
-  <a href="/posts/<%=post.id%>">글 보러가기</a>
+  <%= link_to '글보기', post %>
+  <!-- <a href="/posts/<#%=post.id%>">글 보러가기</a> -->
   <hr />
 <% end %>

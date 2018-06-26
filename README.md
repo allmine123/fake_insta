@@ -120,3 +120,22 @@ config.scoped_views = true
 
    
 
+### Gem
+
+- `gem 'pry-rails'`
+
+
+
+```ruby
+Post.find(1)
+Post.first(3) # 앞에서부터 3개
+Post.last(3) # 뒤에서부터 3개
+Post.order(:title) # title column data 기준으로 정렬
+Post.order(title: :desc) # z~a
+Post.order(title: :asc) # a~z
+Post.where("title = ?", "Colduck") # title이 Golduck 인 것을 찾아줌
+Post.where("title like ?", "%duck%") # title column에서 duck 이 들어 간 data를 찾아줌
+Post.where.not("조건")
+User.where("age > ? AND gender=?", 25, "male")
+```
+

@@ -7,10 +7,11 @@ class PostsController < ApplicationController
   end
 
   def new
+    @post = Post.new #렌더링을 하기 위해 비어있는 @post 만들어 줌
   end
 
   def create
-    @post = Post.new(post_params)
+    @post = current_user.posts.new(post_params)
     @post.save
     redirect_to "/"
   end
@@ -24,12 +25,12 @@ class PostsController < ApplicationController
 
   def update
     @post.update(post_params)
-    redirect_to "posts/#{@post.id}"
+    redirect_to "/posts/#{@post.id}"
   end
 
   def destroy
     @post.destroy
-    redirct_to "/"
+    redirect_to "/"
   end
 
   private
@@ -38,6 +39,6 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.permit(:title, :content)
+    params.require(:post).permit(:title, :content)
   end
 end
