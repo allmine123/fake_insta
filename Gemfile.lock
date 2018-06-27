@@ -221,6 +221,7 @@ DEPENDENCIES
   faker!
   jbuilder (~> 2.0)
   jquery-rails
+  kaminari
   pry-rails
   rails (= 4.2.10)
   rails_db

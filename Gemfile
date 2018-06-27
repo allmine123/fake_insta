@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'kaminari'
 gem 'simple_form'
 gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
 gem 'pry-rails'
