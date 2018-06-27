@@ -234,12 +234,151 @@ User.where("age > ? AND gender=?", 25, "male")
 
 
 
-### gem : Kaminari
+#### 유효성 검사 (Validation)
 
-###  bootstrap적용
+```ruby
+#app/model/post.rb
+#검증(model validation)
+  validates :title, presence: {message: "제목을 입력해주세요."},
+              length: {maximum: 30,
+              too_long: "%{count}자 이내로 입력해주세요."}
+  validates :content, presence: {message: "내용을 입력해주세요."}
+```
 
-`$  rails g kaminari:views bootstrap4`
+```ruby
+def create
+      @post = Post.new(post_params)
+      respond_to do |format|
+        if @post.save
+          #저장이 되었을 경우에 실행
+          format.html {redirect_to '/', notice: '글 작성 완료!!'}
+          #notice는 flash[:notice]에 값을 담기 위해서
+        else
+          #저장실패했을 경우에 (validation) 걸렸을 때 실행
+          format.html { render :new }
+          format.json { render json: @post.errors}
+        end
+      end
+  end
+```
+
+```erb
+<!--app/views/posts/_form.html.erb -->
+..
+	<%= f.error_notification  %>
+..
+```
 
 
 
-### gem : cancancan
+#### custom helper
+
+```ruby
+# app/helpers/application_helper.rb
+def flash_message(type)
+    case type
+    	when "alert" then "alert alert-warning"
+    	when "notice" then "alert alert-primary"
+    end
+end
+```
+
+```erb
+<!-- app/views/layout/application.html.erb -->
+<% flash.each do |key, value| %>
+<div class ="<%= flash_message(key)%>">
+    <%= value %>
+</div>
+<% end %>
+```
+
+
+
+#### gem : [Kaminari](https://github.com/kaminari/kaminari) - Pagination
+
+1. `Gemfile`
+
+   ```ruby
+   gem 'kaminari'
+   ```
+
+   `$ bundle install`
+
+2. controller 설정
+
+   ```ruby
+   # app/controllers/posts_controller.rb
+   def index
+       Post.all.page(prams[:page]).per(5)
+   end
+   ```
+
+3. view 설정
+
+   ```erb
+   <%= paginate @posts %>
+   ```
+
+4. [theme 설정](https://github.com/amatsuda/kaminari_themes) - bootstrap
+
+   ```console
+   $ rails g kaminari:views bootstrap4
+   ```
+
+
+
+#### gem : [cancancan](https://github.com/CanCanCommunity/cancancan) - 권한설정
+
+1. Gemfile
+
+   ```ruby
+   gem 'cancancan', '~> 2.0'
+   ```
+
+2. ability.rb
+
+   ```console
+   $ rails g cancan:ability
+   ```
+   - `app/models/ability.rb` 생성
+
+   ```ruby
+   #app/models/ability.rb
+   can :read, Post
+   return unless user.present?
+   can :manage, Post, user_id: user.id
+   can :create, Comment
+   ```
+
+3. View에서 ability 확인
+
+   ```erb
+   <% if can? :update, @post %>
+   	<%= link_to '수정', edit_post_path %>
+   <% end %>
+   ```
+
+4. controller ability 확인
+
+   ```ruby
+   # app/controller/posts_controller.rb
+   load_and_authorize_resource
+   # restful resources를 사용하는 경우에만 가능, 아닌 경우에는 독립적으로 액션별로 설정해줘야 함.
+   def show
+      authorize! :read, @post 
+   end
+   ```
+
+   - 권한 오류 발생시 메시지 설정
+
+   ```ruby
+   # app/controllers/application_controller.rb
+     rescue_from CanCan::AccessDenied do |exception|
+       respond_to do |format|
+         format.json { head :forbidden, content_type: 'text/html' }
+         format.html { redirect_to main_app.root_url, notice: exception.message }
+         format.js   { head :forbidden, content_type: 'text/html' }
+       end
+     end
+   ```
+

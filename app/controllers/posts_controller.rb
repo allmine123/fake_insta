@@ -3,7 +3,7 @@ class PostsController < ApplicationController
 
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: :index
-  load_and_authorize_resource # before action 밑에 넣어야. 로그인 후 권한
+  load_and_authorize_resource # before action 밑에 넣어야. 로그인 후 권한, 로그아웃하고 글쓰기 누르면 로그인 화면으로 넘어가도록
 
   def index
     # @posts = Post.all.page(params[:page]).per(5)
@@ -49,8 +49,15 @@ class PostsController < ApplicationController
   end
 
   def update
-    @post.update(post_params)
-    redirect_to "/posts/#{@post.id}"
+
+    respond_to do |format|
+    if @post.update(post_params)
+      format.html {redirect_to @post, notice: '글 수정 완료!!'}
+    else
+      format.html { render :edit}
+      format.json { render json: @post.errors }
+    end
+    end
   end
 
   def destroy

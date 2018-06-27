@@ -2,7 +2,7 @@ module ApplicationHelper
   def flash_message(type)
     case type
     when "alert" then "alert alert-warning"
-      when "notice" then "alert alert-primary"
+    when "notice" then "alert alert-primary"
     end
   end
 
