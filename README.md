@@ -231,3 +231,15 @@ User.where("age > ? AND gender=?", 25, "male")
      <%= f.button :submit, class: "btn-primary" %>
    <% end %>
    ```
+
+
+
+### gem : Kaminari
+
+###  bootstrap적용
+
+`$  rails g kaminari:views bootstrap4`
+
+
+
+### gem : cancancan
