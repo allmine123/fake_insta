@@ -1,8 +1,9 @@
 class PostsController < ApplicationController
 
-  load_and_authorize_resource
+
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: :index
+  load_and_authorize_resource # before action 밑에 넣어야. 로그인 후 권한
 
   def index
     # @posts = Post.all.page(params[:page]).per(5)
