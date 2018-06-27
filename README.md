@@ -188,7 +188,7 @@ User.where("age > ? AND gender=?", 25, "male")
 
 ```erb
 <%= link_to '글 보기', @post%>
-<%= link_to '글 보기', post_path, class %>
+<%= link_to '글 보기', post_path, class: "btn btn-primary" %>
 <%= link_to '글 쓰기', new_post_path %>
 <%= link_to '글 수정', edit_post_path %>
 <%= link_to '모든 글 보기', posts_path %>
