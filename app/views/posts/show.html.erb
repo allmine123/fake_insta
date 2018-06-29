@@ -19,7 +19,76 @@
 </form>
 <hr />
 
-<% @comments.each do |comment| %>
-  <%= comment.content %>
-  <hr />
-<% end %>
+<div id="comments">
+  <% @comments.each do |comment| %>
+    <p>
+      <%= comment.content %>
+      <%# link_to '댓삭', destroy_comment_path(comment.id), method: :delete, class:"delete_comment" %>
+      <%= link_to '댓삭', destroy_comment_path(comment.id), class:"delete_comment" %>
+    </p>
+    <hr />
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  $('input[type="submit"]').on('click', function(e){
+    e.preventDefault();
+    alert('스타뚜!!');
+    $.ajax({
+      url: $('form').attr('action'),
+      type: "POST",
+      data:{content:$('input[name="content"]').val(),
+      authenticity_token:$('[name="csrf-token"]').attr('content')},
+      dataType: 'script',
+      success: function(){
+        alert('success');
+        $('input[name="content"]').val('');
+      },
+      error: function(){
+        alert('fail');
+      }
+
+    });
+  });
+
+  $('.delete_comment').on('click', function(e){
+    e.preventDefault();
+    $.ajax({
+      url: this.href,//<a></a>
+      type: "DELETE",
+      data: {authenticity_token:$('[name="csrf-token"]').attr('content')},
+      dataType:"script",
+      success: function(){
+        alert('delete_complete!');
+      },
+      error: function(){
+        alert('delete_error!');
+      }
+    });
+  });
+</script>
+
+<!-- <script>
+  $('input[type="submit"]').on('click', function(e){
+    var response = confirm("제출ok?");
+    if(!response){
+      //e.preventDefault(); //submit 되는 것을 막아줌
+      //== return false
+      return false;
+    } else {
+      //e.stopImmediatePropagation(); //동일한 element에 있는 다른 이벤트들 발생 X
+    }
+  });
+
+  function checkContentLen(e){
+    var content = $('input[name="content"]').val();
+    if (content.length < 1){
+      alert('1자 이상 작성하거라');
+      return false;
+    }else{
+      alert('굳굳');
+    }
+  }
+$('input[type="submit"]').on("click", checkContentLen);
+
+</script> -->
