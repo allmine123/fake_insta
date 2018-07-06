@@ -1,6 +1,9 @@
 class Post < ActiveRecord::Base
   has_many :comments
   belongs_to :user
+  has_many :likes
+  has_many :liked_users, through: :likes, source: :user #like를 통한 m:n 관계, user테이블과 관계가 있다.
+  #has_many :users, through: :likes
 
   #검증(model validation)
   validates :title, presence: {message: "제목을 입력해주세요."},

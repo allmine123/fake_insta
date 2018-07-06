@@ -1,0 +1,4 @@
+var like_btn = $('a[data-id=<%= @post_id %>]');
+like_btn.attr('href', 'posts/<%= @post_id %>/dislike');
+like_btn.children().toggleClass('far');
+like_btn.children().toggleClass('fas');
