@@ -1,11 +1,11 @@
 <!-- <a href="/posts/new">글 쓰러가기</a> -->
-<%= link_to '글쓰기', new_post_path, class: "btn btn-light" %>
+<%= link_to '글쓰기', new_post_path, class: "btn btn-info" %>
 
 <% @posts.each do |post| %>
   <p>작성자 : <%= post.user.email %></p>
   <p><%= post.id %>번째 글</p>
   <p>제목 : <%= post.title %></p>
-  <p>내용 : <%= post.content %></p>
+  <p>내용 : <%= post.content.html_safe %></p>
   <%= link_to '글보기', post, class: "btn btn-primary" %>
   <!-- <a href="/posts/<#%=post.id%>">글 보러가기</a> -->
   <% if current_user and current_user.liked_posts.include? post %>

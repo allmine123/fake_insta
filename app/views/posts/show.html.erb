@@ -1,7 +1,7 @@
 <h1>글 봐!!</h1>
 <%= @post.id %>번째 글
 <%= @post.title %>
-<%= @post.content %>
+<%= @post.content.html_safe %>
 <%= image_tag @post.img.thumb_fit.url %>
 <%= image_tag @post.img.thumb_fill.url %>
 <%= image_tag @post.img %>
